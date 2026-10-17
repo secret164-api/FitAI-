@@ -1,0 +1,416 @@
+<title>STILLE Storefront</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112..125,400;112..125,600&family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: full-bleed editorial bands with a quiet 12-col grid inside; product grid 4 → 2 columns. */
+:root {
+  /* Brand — change these to re-skin the whole store */
+  --brand: "STILLE";
+  --bg: #E4E4DF;        /* fjord stone */
+  --surface: #EEEEEA;
+  --fg: #1A1B19;
+  --muted: #6B6C66;
+  --line: #C9C9C2;
+  --accent: #2E3838;    /* deep slate */
+  --img-a: #CFCFC7;
+  --img-b: #B9BAB1;
+  --img-c: #8E9089;
+  --on-hero: #F2F2EE;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121312; --surface: #1A1B1A; --fg: #E6E6E0; --muted: #9A9B94; --line: #2E302D;
+  --accent: #A9B8B6; --img-a: #262825; --img-b: #30332F; --img-c: #43473F; --on-hero: #F2F2EE; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121312; --surface: #1A1B1A; --fg: #E6E6E0; --muted: #9A9B94; --line: #2E302D;
+  --accent: #A9B8B6; --img-a: #262825; --img-b: #30332F; --img-c: #43473F; --on-hero: #F2F2EE; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--font-body); -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+:focus-visible { outline: 1.5px solid var(--fg); outline-offset: 3px; }
+.wrap { padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.label { font: 400 11px/1.2 var(--font-body); letter-spacing: .14em; text-transform: uppercase; }
+.mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.display { font-family: var(--font-display); font-stretch: 125%; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; text-wrap: balance; }
+
+/* Announcement */
+.announce { background: var(--fg); color: var(--bg); text-align: center; padding-block: 9px; }
+
+/* Header */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); border-bottom: 1px solid var(--line); }
+.bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-block: 16px; gap: 16px; }
+.nav, .tools { display: flex; gap: 24px; align-items: center; }
+.tools { justify-content: flex-end; }
+.logo { font-family: var(--font-display); font-stretch: 125%; font-weight: 600; font-size: 20px; letter-spacing: .32em; padding-left: .32em; }
+.nav a, .tools button { position: relative; }
+.nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px; background: currentColor; transition: right .25s; }
+.nav a:hover::after { right: 0; }
+.menu-btn { display: none; }
+.count { font-family: var(--font-mono); }
+
+/* Imagery placeholders — swap each .ph for an <img> */
+.ph { position: relative; background:
+  radial-gradient(120% 80% at 50% 38%, var(--img-a), transparent 70%),
+  linear-gradient(170deg, var(--img-b), var(--img-c)); overflow: hidden; max-width: 100%; }
+.ph::after { content: attr(data-ph); position: absolute; left: 12px; bottom: 10px; font: 400 10px/1 var(--font-mono); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.ph .shape { position: absolute; inset: 14% 26% 0; background: var(--img-c); opacity: .55;
+  clip-path: polygon(30% 0, 70% 0, 82% 8%, 100% 30%, 92% 34%, 82% 24%, 82% 100%, 18% 100%, 18% 24%, 8% 34%, 0 30%, 18% 8%); }
+
+/* Hero */
+.hero { position: relative; color: var(--on-hero); }
+.hero .ph { aspect-ratio: 16 / 8; background: linear-gradient(180deg, #4B504C, #262A27 70%, #1C1F1D); }
+.hero .ph::after { color: rgba(242,242,238,.5); }
+.hero .ph .shape { inset: 10% 38% 0; background: #161816; opacity: .7; }
+.hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding-block: 40px; display: grid; gap: 18px; justify-items: start; }
+.hero h1 { margin: 0; font-size: clamp(30px, 6vw, 84px); line-height: .95; max-width: 14ch; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border: 1px solid currentColor; }
+.btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.hero .btn:hover { background: var(--on-hero); color: #1A1B19; border-color: var(--on-hero); }
+.btn.solid { background: var(--fg); color: var(--bg); border-color: var(--fg); width: 100%; justify-content: center; }
+.btn.solid:hover { background: var(--accent); border-color: var(--accent); }
+
+/* Section heads */
+section { padding-block: 56px 0; }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 20px; }
+.sec-head h2 { margin: 0; font-size: 15px; }
+.filters { display: flex; gap: 18px; flex-wrap: wrap; }
+.filters button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; }
+
+/* Collection split */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tile { position: relative; display: block; }
+.tile .ph { aspect-ratio: 4 / 5; }
+.tile .cap { position: absolute; left: 20px; bottom: 20px; display: grid; gap: 6px; }
+.tile .cap .display { font-size: clamp(18px, 2.4vw, 30px); }
+.tile:hover .ph { filter: brightness(.94); }
+
+/* Product grid */
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 6px; }
+.card { display: grid; gap: 10px; text-align: left; }
+.card .media { position: relative; }
+.card .ph { aspect-ratio: 3 / 4; transition: filter .3s; }
+.card .ph.alt { position: absolute; inset: 0; opacity: 0; transition: opacity .35s; background: linear-gradient(170deg, var(--img-a), var(--img-b)); }
+.card:hover .ph.alt { opacity: 1; }
+.card .quick { position: absolute; left: 8px; right: 8px; bottom: 8px; background: var(--surface); padding: 10px; text-align: center; opacity: 0; transform: translateY(6px); transition: .25s; }
+.card:hover .quick, .card:focus-within .quick { opacity: 1; transform: none; }
+.card .meta { display: flex; justify-content: space-between; gap: 10px; padding-inline: 2px; }
+.card .name { font-size: 13px; }
+.card .sub { color: var(--muted); font-size: 12px; }
+.tag { position: absolute; top: 10px; left: 10px; z-index: 1; }
+
+/* Editorial band */
+.editorial { display: grid; grid-template-columns: 5fr 7fr; gap: 6px; align-items: stretch; }
+.editorial .text { background: var(--surface); padding: clamp(24px, 5vw, 72px); display: grid; align-content: end; gap: 18px; }
+.editorial h3 { margin: 0; font-size: clamp(22px, 3vw, 40px); line-height: 1; }
+.editorial p { margin: 0; max-width: 46ch; color: var(--muted); }
+.editorial .ph { min-height: 420px; }
+
+/* Footer */
+footer { margin-top: 80px; border-top: 1px solid var(--line); padding-block: 48px 32px; }
+.foot { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
+.foot h4 { margin: 0 0 14px; }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--muted); }
+.foot ul a:hover { color: var(--fg); }
+.news { display: flex; border-bottom: 1px solid var(--fg); max-width: 380px; margin-top: 14px; }
+.news input { flex: 1; min-width: 0; background: none; border: 0; padding: 10px 0; font: inherit; color: var(--fg); }
+.news input:focus { outline: none; }
+.news-msg { color: var(--muted); font-size: 12px; margin-top: 8px; min-height: 1.2em; }
+.legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; color: var(--muted); }
+.wordmark { font-family: var(--font-display); font-stretch: 125%; font-weight: 600; font-size: clamp(56px, 17vw, 260px); line-height: .8; letter-spacing: .06em; margin-top: 40px; color: var(--line); overflow: hidden; white-space: nowrap; }
+
+/* Drawers */
+.scrim { position: fixed; inset: 0; background: rgba(10,11,10,.38); z-index: 70; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; top: 0; bottom: 0; right: 0; width: min(440px, 100%); background: var(--bg); z-index: 80; transform: translateX(100%); transition: transform .35s cubic-bezier(.2,.7,.2,1); display: grid; grid-template-rows: auto 1fr auto;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) 20px; }
+.drawer.left { right: auto; left: 0; transform: translateX(-100%); padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: 20px; }
+.drawer.on { transform: none; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.lines { overflow: auto; display: grid; align-content: start; gap: 18px; padding-block: 18px; }
+.line { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 14px; }
+.line .ph { aspect-ratio: 3/4; }
+.line .ph::after { display: none; }
+.qty { display: inline-flex; gap: 12px; align-items: center; border: 1px solid var(--line); padding: 4px 10px; margin-top: 8px; }
+.empty { color: var(--muted); padding-top: 24px; }
+.sum { display: grid; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
+.sum .row { display: flex; justify-content: space-between; }
+.ship { height: 2px; background: var(--line); }
+.ship i { display: block; height: 100%; background: var(--fg); transition: width .3s; }
+.mobile-nav { display: grid; gap: 18px; padding-top: 24px; align-content: start; }
+.mobile-nav a { font-family: var(--font-display); font-stretch: 125%; font-weight: 600; text-transform: uppercase; font-size: 22px; letter-spacing: .04em; }
+
+/* Product modal */
+dialog.pdp { border: 0; padding: 0; background: var(--bg); color: var(--fg); width: min(980px, calc(100% - 32px)); max-height: calc(100% - 32px); }
+dialog.pdp::backdrop { background: rgba(10,11,10,.45); }
+.pdp-in { display: grid; grid-template-columns: 1.1fr 1fr; }
+.pdp-in .ph { aspect-ratio: 3/4; }
+.pdp-info { padding: 32px; display: grid; gap: 18px; align-content: start; }
+.pdp-info h2 { margin: 0; font-size: 20px; }
+.sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.sizes button { border: 1px solid var(--line); padding: 10px 0; }
+.sizes button[aria-pressed="true"] { border-color: var(--fg); background: var(--fg); color: var(--bg); }
+.sizes button:disabled { color: var(--muted); text-decoration: line-through; cursor: not-allowed; }
+.pdp-close { position: absolute; top: 14px; right: 16px; }
+details { border-top: 1px solid var(--line); padding-top: 12px; }
+details p { color: var(--muted); margin: 10px 0 0; }
+summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+summary::after { content: "+"; }
+details[open] summary::after { content: "–"; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 12px 18px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 860px) {
+  .nav { display: none; } .menu-btn { display: inline; }
+  .tools .hide-sm { display: none; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .editorial, .pdp-in { grid-template-columns: 1fr; }
+  .editorial .ph { min-height: 280px; }
+  .foot { grid-template-columns: 1fr 1fr; }
+  .foot > :first-child { grid-column: 1 / -1; }
+  .hero .ph { aspect-ratio: 4 / 5; }
+  .card .quick { display: none; }
+}
+@media (max-width: 520px) { .split { grid-template-columns: 1fr; } .logo { font-size: 16px; } .tools { gap: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="announce label">Free shipping in Norway over 2 500 kr · Returns within 30 days</div>
+
+<header class="site">
+  <div class="bar wrap">
+    <nav class="nav label" aria-label="Main">
+      <a href="#new">New</a><a href="#shop">Shop</a><a href="#collections">Collections</a><a href="#story">Journal</a>
+      <button class="menu-btn label" id="menuBtn" aria-label="Open menu">Menu</button>
+    </nav>
+    <a href="#" class="logo" aria-label="Home">STILLE</a>
+    <div class="tools label">
+      <button class="menu-btn label" id="menuBtn2" aria-label="Open menu">Menu</button>
+      <button class="hide-sm" id="regionBtn" title="Region">NO / NOK</button>
+      <button class="hide-sm">Search</button>
+      <button class="hide-sm">Account</button>
+      <button id="bagBtn">Bag (<span class="count" id="bagCount">0</span>)</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="ph" data-ph="Hero · campaign film or image, 16:8"><div class="shape"></div></div>
+    <div class="hero-copy wrap">
+      <span class="label">Autumn / Winter 26</span>
+      <h1 class="display">Built for the long cold</h1>
+      <a href="#shop" class="btn label">Shop the collection</a>
+    </div>
+  </div>
+
+  <section id="collections" class="wrap">
+    <div class="split">
+      <a class="tile" href="#shop" data-filter="outerwear">
+        <div class="ph" data-ph="Collection image · 4:5"><div class="shape"></div></div>
+        <div class="cap"><span class="display">Outerwear</span><span class="label">Discover</span></div>
+      </a>
+      <a class="tile" href="#shop" data-filter="essentials">
+        <div class="ph" data-ph="Collection image · 4:5"><div class="shape"></div></div>
+        <div class="cap"><span class="display">Essentials</span><span class="label">Discover</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="shop" class="wrap">
+    <div class="sec-head">
+      <h2 class="label" id="new">New arrivals</h2>
+      <div class="filters label" role="group" aria-label="Filter products">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="outerwear" aria-pressed="false">Outerwear</button>
+        <button data-f="essentials" aria-pressed="false">Essentials</button>
+        <button data-f="bottoms" aria-pressed="false">Bottoms</button>
+        <button data-f="knit" aria-pressed="false">Knitwear</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="story" class="wrap">
+    <div class="editorial">
+      <div class="text">
+        <span class="label">Journal · Material</span>
+        <h3 class="display">Wool from the west coast</h3>
+        <p>Our heavyweight coats start as Norwegian Villsau wool, spun in Rogaland and milled to 680 g/m². Dense enough for sleet, soft enough to wear every day for a decade.</p>
+        <a href="#shop" class="btn label" style="justify-self:start">Read the story</a>
+      </div>
+      <div class="ph" data-ph="Editorial · landscape or detail shot"><div class="shape"></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <div>
+      <h4 class="label">Newsletter</h4>
+      <p style="margin:0;color:var(--muted);max-width:40ch">Hear about new collections and restocks first.</p>
+      <form class="news" id="news">
+        <label for="email" class="label" style="position:absolute;left:-9999px">Email</label>
+        <input id="email" type="email" placeholder="Email address" required>
+        <button class="label" type="submit">Sign up</button>
+      </form>
+      <div class="news-msg" id="newsMsg" aria-live="polite"></div>
+    </div>
+    <div><h4 class="label">Shop</h4><ul><li><a href="#shop">New arrivals</a></li><li><a href="#shop">Outerwear</a></li><li><a href="#shop">Essentials</a></li><li><a href="#shop">Gift card</a></li></ul></div>
+    <div><h4 class="label">Help</h4><ul><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">Size guide</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div><h4 class="label">Company</h4><ul><li><a href="#story">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Stockists</a></li><li><a href="#">Careers</a></li></ul></div>
+  </div>
+  <div class="legal label"><span>© 2026 STILLE AS · Org.nr 000 000 000</span><span>Norway (NOK kr)</span></div>
+  <div class="wordmark" aria-hidden="true">STILLE</div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="bag" aria-label="Shopping bag">
+  <div class="drawer-head"><span class="label">Bag (<span id="bagCount2">0</span>)</span><button class="label" data-close>Close</button></div>
+  <div class="lines" id="lines"></div>
+  <div class="sum">
+    <div class="label" id="shipMsg"></div>
+    <div class="ship"><i id="shipBar" style="width:0"></i></div>
+    <div class="row"><span class="label">Subtotal</span><span class="mono" id="subtotal">0 kr</span></div>
+    <span style="color:var(--muted);font-size:12px">Incl. 25% MVA. Shipping calculated at checkout.</span>
+    <button class="btn solid label" id="checkout">Checkout</button>
+  </div>
+</aside>
+
+<aside class="drawer left" id="mnav" aria-label="Menu">
+  <div class="drawer-head"><span class="logo" style="font-size:16px">STILLE</span><button class="label" data-close>Close</button></div>
+  <nav class="mobile-nav"><a href="#new" data-close>New</a><a href="#shop" data-close>Shop</a><a href="#collections" data-close>Collections</a><a href="#story" data-close>Journal</a></nav>
+  <div class="label" style="color:var(--muted)">NO / NOK</div>
+</aside>
+
+<dialog class="pdp" id="pdp">
+  <div class="pdp-in">
+    <div class="ph" id="pdpImg" data-ph="Product gallery · 3:4"><div class="shape"></div></div>
+    <div class="pdp-info">
+      <button class="label pdp-close" id="pdpClose">Close</button>
+      <span class="label" id="pdpCat"></span>
+      <h2 class="display" id="pdpName"></h2>
+      <span class="mono" id="pdpPrice"></span>
+      <p id="pdpDesc" style="margin:0;color:var(--muted)"></p>
+      <div><div class="label" style="margin-bottom:8px">Size</div><div class="sizes" id="sizes"></div></div>
+      <button class="btn solid label" id="addBtn">Select a size</button>
+      <details><summary class="label">Fabric &amp; care</summary><p id="pdpFabric"></p></details>
+      <details><summary class="label">Shipping &amp; returns</summary><p>Ships from Oslo in 1–2 working days. Free returns within 30 days.</p></details>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast label" id="toast" role="status"></div>
+
+<script>
+// Product catalogue — replace with your own products (or wire up to Shopify Storefront API)
+const PRODUCTS = [
+  { id: 1, name: "Villsau Overcoat", cat: "outerwear", color: "Charcoal", price: 7900, tag: "New", fabric: "100% Norwegian wool, 680 g/m². Dry clean only.", desc: "Long, unstructured overcoat with dropped shoulders and a concealed placket.", soldOut: ["XS"] },
+  { id: 2, name: "Heavy Fleece Hoodie", cat: "essentials", color: "Stone", price: 1800, fabric: "100% cotton loopback, 480 g/m². Wash cold, dry flat.", desc: "Boxy hoodie in brushed heavyweight fleece with a double-layer hood." },
+  { id: 3, name: "Relaxed Wool Trouser", cat: "bottoms", color: "Slate", price: 2900, fabric: "Wool twill with 2% elastane. Dry clean.", desc: "Wide straight leg, front pleats, side adjusters at the waist." },
+  { id: 4, name: "Merino Rib Crewneck", cat: "knit", color: "Oat", price: 2400, tag: "New", fabric: "100% extra-fine merino, 7 gauge. Hand wash.", desc: "Dense rib knit with a high crew neck and long cuffs." },
+  { id: 5, name: "Padded Field Jacket", cat: "outerwear", color: "Moss", price: 5400, fabric: "Waxed cotton shell, recycled fill. Wipe clean.", desc: "Hip-length field jacket with four patch pockets and a corduroy collar.", soldOut: ["XL"] },
+  { id: 6, name: "Essential Tee 3-Pack", cat: "essentials", color: "Mixed", price: 1200, fabric: "100% organic cotton jersey, 240 g/m².", desc: "Heavyweight tees with a slightly dropped shoulder. Black, stone and white." },
+  { id: 7, name: "Fleece Sweatpant", cat: "bottoms", color: "Stone", price: 1600, fabric: "100% cotton loopback, 480 g/m². Wash cold.", desc: "Relaxed sweatpant with elastic waist and open hem." },
+  { id: 8, name: "Mohair Cardigan", cat: "knit", color: "Ash", price: 3200, fabric: "Mohair, wool and polyamide blend. Hand wash.", desc: "Oversized brushed cardigan with horn buttons." }
+];
+const SIZES = ["XS", "S", "M", "L", "XL"];
+const FREE_SHIP = 2500;
+
+const $ = s => document.querySelector(s);
+const kr = n => n.toLocaleString("nb-NO").replace(/ /g, " ") + " kr";
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("cart") || "[]"); } catch (e) {}
+const save = () => { try { localStorage.setItem("cart", JSON.stringify(cart)); } catch (e) {} };
+
+function renderGrid(filter = "all") {
+  $("#grid").innerHTML = PRODUCTS.filter(p => filter === "all" || p.cat === filter).map(p => `
+    <article class="card">
+      <button class="media" data-open="${p.id}" aria-label="View ${p.name}">
+        ${p.tag ? `<span class="tag label">${p.tag}</span>` : ""}
+        <div class="ph" data-ph="Product · front"><div class="shape"></div></div>
+        <div class="ph alt" data-ph="Product · on model"></div>
+      </button>
+      <button class="quick label" data-open="${p.id}">Quick add</button>
+      <div class="meta"><div><div class="name">${p.name}</div><div class="sub">${p.color}</div></div><span class="mono">${kr(p.price)}</span></div>
+    </article>`).join("");
+}
+
+function setFilter(f) {
+  document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f));
+  renderGrid(f);
+}
+
+// Product detail
+let current = null, size = null;
+function openPdp(id) {
+  current = PRODUCTS.find(p => p.id === +id); size = null;
+  $("#pdpCat").textContent = current.cat;
+  $("#pdpName").textContent = current.name;
+  $("#pdpPrice").textContent = kr(current.price);
+  $("#pdpDesc").textContent = current.desc;
+  $("#pdpFabric").textContent = current.fabric;
+  $("#sizes").innerHTML = SIZES.map(s => `<button class="mono" data-size="${s}" aria-pressed="false" ${current.soldOut?.includes(s) ? "disabled" : ""}>${s}</button>`).join("");
+  $("#addBtn").textContent = "Select a size";
+  $("#pdp").showModal();
+}
+
+// Cart
+function addToCart() {
+  if (!size) { $("#addBtn").textContent = "Choose a size first"; return; }
+  const hit = cart.find(l => l.id === current.id && l.size === size);
+  hit ? hit.qty++ : cart.push({ id: current.id, size, qty: 1 });
+  save(); renderCart(); $("#pdp").close(); toast(`${current.name} (${size}) added to bag`); open("#bag");
+}
+function renderCart() {
+  const n = cart.reduce((a, l) => a + l.qty, 0);
+  const total = cart.reduce((a, l) => a + l.qty * PRODUCTS.find(p => p.id === l.id).price, 0);
+  $("#bagCount").textContent = $("#bagCount2").textContent = n;
+  $("#subtotal").textContent = kr(total);
+  $("#shipBar").style.width = Math.min(100, total / FREE_SHIP * 100) + "%";
+  $("#shipMsg").textContent = total >= FREE_SHIP ? "You have free shipping" : `${kr(FREE_SHIP - total)} away from free shipping`;
+  $("#checkout").disabled = !n;
+  $("#lines").innerHTML = n ? cart.map((l, i) => {
+    const p = PRODUCTS.find(x => x.id === l.id);
+    return `<div class="line"><div class="ph"><div class="shape"></div></div>
+      <div><div class="name">${p.name}</div><div class="sub" style="color:var(--muted);font-size:12px">${p.color} · ${l.size}</div>
+      <div class="qty mono"><button data-q="${i}" data-d="-1" aria-label="Decrease">−</button>${l.qty}<button data-q="${i}" data-d="1" aria-label="Increase">+</button></div></div>
+      <span class="mono">${kr(p.price * l.qty)}</span></div>`;
+  }).join("") : `<p class="empty">Your bag is empty.</p>`;
+}
+
+// Drawers
+function open(sel) { $(sel).classList.add("on"); $("#scrim").classList.add("on"); }
+function closeAll() { document.querySelectorAll(".drawer").forEach(d => d.classList.remove("on")); $("#scrim").classList.remove("on"); }
+let tt; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("on"), 2400); }
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button, a"); if (!t) return;
+  if (t.dataset.open) openPdp(t.dataset.open);
+  else if (t.dataset.f) setFilter(t.dataset.f);
+  else if (t.dataset.filter) setFilter(t.dataset.filter);
+  else if (t.dataset.size) { size = t.dataset.size; document.querySelectorAll("#sizes button").forEach(b => b.setAttribute("aria-pressed", b === t)); $("#addBtn").textContent = `Add to bag · ${kr(current.price)}`; }
+  else if (t.dataset.q) { const l = cart[t.dataset.q]; l.qty += +t.dataset.d; if (l.qty < 1) cart.splice(t.dataset.q, 1); save(); renderCart(); }
+  if (t.hasAttribute("data-close")) closeAll();
+});
+$("#addBtn").onclick = addToCart;
+$("#pdpClose").onclick = () => $("#pdp").close();
+$("#pdp").addEventListener("click", e => { if (e.target === $("#pdp")) $("#pdp").close(); });
+$("#bagBtn").onclick = () => open("#bag");
+$("#menuBtn").onclick = $("#menuBtn2").onclick = () => open("#mnav");
+$("#scrim").onclick = closeAll;
+$("#checkout").onclick = () => toast("Checkout goes here: connect Shopify, Stripe or Vipps");
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+$("#news").addEventListener("submit", e => { e.preventDefault(); $("#newsMsg").textContent = "Thanks. You are on the list."; e.target.reset(); });
+
+renderGrid(); renderCart();
+</script>
